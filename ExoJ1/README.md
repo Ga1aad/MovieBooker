@@ -14,3 +14,19 @@ Pour cela, j'ai utilisé :
 ## Ressources
 
 Aide via internet [ICI](https://www.digitalocean.com/community/tutorials/how-to-encode-and-decode-strings-with-base64-in-javascript).
+
+# Filtrage.js
+
+## Description
+
+L'objectif de `filtrage.js` est de filtrer un tableau de films en fonction de leur catégorie ou de leur id.
+
+## Implémentation
+
+Pour cela, j'ai utilisé :
+
+- La fonction `filter()` pour filtrer le tableau de films
+
+## Ressources
+
+Pas de ressources utilisées pour cette partie.
