@@ -3,6 +3,11 @@
 /hello-world/node_modules
 /hello-world/build
 
+# compiled output
+/projet-final/dist
+/projet-final/node_modules
+/projet-final/build
+
 # Logs
 logs
 *.log

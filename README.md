@@ -75,6 +75,14 @@ Résultat fonctionnel une fois la mise à jour effectuée :
 
 ---
 
+### Projet final Nest.js : [ICI](projet-final/)
+
+Génération du projet Nest.js :
+
+```bash
+nest new projet-final
+```
+
 ## Ressources
 
 ### ExoJ1
