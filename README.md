@@ -6,7 +6,7 @@ Projet Nest.js académique de reservation de films en ligne.
 
 Ce projet contient plusieurs exercices afin de pratiquer et monter en compétences avec Nest.js.
 
-### Exercices du jour 1 : [ExoJ1](ExoJ1/)
+### Exercices du jour 1 : [ICI](ExoJ1/)
 
 Dans un premier temps, deux exercices ont été réalisés en JS natif.
 
@@ -22,7 +22,7 @@ Plus d'information sur les exercices [ICI](ExoJ1/README.md).
 
 ---
 
-### Projet Nest.js Hello World : [Hello World](hello-world/)
+### Projet Nest.js Hello World : [ICI](hello-world/)
 
 Nous avons initialiser un projet Nest.js "Hello World" afin d'analyser la structure type de ce projet.
 
@@ -65,12 +65,22 @@ describe('root', () => {
 npm run test
 ```
 
-Résultat non fonctionnel :
+Résultat avant modification de app.service.ts :
 
 ![Image du test non fonctionnel](./Capture/TestHelloWorldNoFonctionnel.png)
 
-Résultat fonctionnel :
+Résultat fonctionnel une fois la mise à jour effectuée :
 
 ![Image du test fonctionnel](./Capture/TestHelloWorldFonctionnel.png)
 
 ---
+
+## Ressources
+
+### ExoJ1
+
+- Lien d'aide pour Authentification.js : [www.digitalocean.com](https://www.digitalocean.com/community/tutorials/how-to-encode-and-decode-strings-with-base64-in-javascript).
+
+### Projet Nest.js Hello World
+
+- Lien d'aide pour prendre en main Nest.js : [nestjs.com](https://docs.nestjs.com/first-steps).
