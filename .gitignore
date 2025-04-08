@@ -4,9 +4,10 @@
 /hello-world/build
 
 # compiled output
-/projet-final/dist
-/projet-final/node_modules
-/projet-final/build
+/server/dist
+/server/node_modules
+/server/build
+/server/.env
 
 # Logs
 logs

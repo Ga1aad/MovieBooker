@@ -83,6 +83,82 @@ Génération du projet Nest.js :
 nest new projet-final
 ```
 
+Nous avons implémenté un système d'authentification complet avec JWT dans notre projet.
+
+#### Configuration initiale
+
+Commencer par l'installation des dépendances nécessaires :
+
+```bash
+npm install @nestjs/jwt bcrypt @nestjs/passport passport passport-jwt @types/passport-jwt
+npm install @nestjs/swagger swagger-ui-express
+```
+
+#### Création des endpoints d'authentification
+
+Nous avons créé trois endpoints principaux Register, Login et Profile :
+
+- **POST /auth/register** : Inscription d'un nouvel utilisateur
+  - Validation des données avec class-validator
+  - Hachage du mot de passe avec bcrypt
+  - Sauvegarde en base de données PostgreSQL
+
+![Interface Swagger Register](./Capture/Swagger1-register.png)
+
+- **POST /auth/login** : Connexion d'un utilisateur
+  - Vérification des identifiants
+  - Génération d'un token JWT
+
+![Interface Swagger Login](./Capture/Swagger1-login.png)
+
+- **GET /auth/profile** : Route protégée nécessitant une authentification
+  - Protection avec JWT Guard
+  - Accessible uniquement avec un token valide
+
+![Interface Swagger Profile](./Capture/Swagger1-profile.png)
+
+#### Documentation avec Swagger
+
+Nous avons connecté le projet avec Swagger pour permettre de:
+
+- Tester les endpoints directement depuis l'interface
+- Voir les schémas de données attendu
+- Comprendre les différente réponses possibles
+
+![Schémas Swagger](./Capture/Swagger1-schemas.png)
+
+#### Tests unitaires
+
+Plusieurs tests unitaires ont été mises en place via les fichiers `.spec.ts`:
+
+- Tests unitaires pour les DTOs
+- Tests du service d'authentification
+- Tests du contrôleur
+- Tests de la stratégie JWT
+
+Pour lancer les tests :
+
+```bash
+npm run test
+```
+
+Résultat des tests :
+
+![Résultat des tests](./Capture/CaptureTestJ1.png)
+
+#### 5. Utilisation
+
+1. Démarrer le serveur :
+
+```bash
+npm run start:dev
+```
+
+2. Accéder à la documentation Swagger :
+   http://localhost:3000/api
+
+---
+
 ## Ressources
 
 ### ExoJ1
