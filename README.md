@@ -75,17 +75,17 @@ Résultat fonctionnel une fois la mise à jour effectuée :
 
 ---
 
-### Projet final Nest.js : [ICI](projet-final/)
+### Projet final Nest.js : [ICI](server/)
 
 Génération du projet Nest.js :
 
 ```bash
-nest new projet-final
+nest new server
 ```
 
-Nous avons implémenté un système d'authentification complet avec JWT dans notre projet.
-
 #### Configuration initiale
+
+Nous avons implémenté un système d'authentification complet avec JWT dans notre projet.
 
 Commencer par l'installation des dépendances nécessaires :
 
@@ -96,7 +96,15 @@ npm install @nestjs/swagger swagger-ui-express
 
 #### Création des endpoints d'authentification
 
-Nous avons créé trois endpoints principaux Register, Login et Profile :
+Nous avons créé trois endpoints principaux Register, Login et Profile.
+
+Nous avons connecté le projet avec Swagger pour permettre de:
+
+- Tester les endpoints directement depuis l'interface
+- Voir les schémas de données attendu
+- Comprendre les différente réponses possibles
+
+---
 
 - **POST /auth/register** : Inscription d'un nouvel utilisateur
   - Validation des données avec class-validator
@@ -117,13 +125,7 @@ Nous avons créé trois endpoints principaux Register, Login et Profile :
 
 ![Interface Swagger Profile](./Capture/Swagger1-profile.png)
 
-#### Documentation avec Swagger
-
-Nous avons connecté le projet avec Swagger pour permettre de:
-
-- Tester les endpoints directement depuis l'interface
-- Voir les schémas de données attendu
-- Comprendre les différente réponses possibles
+Les schémas de données attendu sont :
 
 ![Schémas Swagger](./Capture/Swagger1-schemas.png)
 
@@ -154,10 +156,90 @@ Résultat des tests :
 npm run start:dev
 ```
 
-2. Accéder à la documentation Swagger :
+2. Accéder à Swagger :
    http://localhost:3000/api
 
 ---
+
+#### Jour 2 : Intégration de l'API TMDB
+
+Nous avons ajouté l'intégration de l'API TMDB (The Movie Database) pour récupérer les informations sur les films.
+
+#### Configuration de l'API TMDB
+
+Installation des dépendances nécessaires :
+
+```bash
+npm install axios @nestjs/config
+```
+
+Configuration des variables d'environnement dans le fichier `.env` :
+
+```env
+TMDB_API_URL=https://api.themoviedb.org/3
+TMDB_API_KEY=votre_clé_api
+```
+
+#### Création du endpoint films
+
+Nous avons créé un endpoint unique pour la gestion des films que l'on retrouve dans Swagger :
+
+- **GET /movies** : Récupération de la liste des films
+  - Pagination des résultats
+  - Recherche par titre
+  - Tri par popularité, date de sortie, vote moyen
+
+![Interface Swagger Movies](./Capture/Swagger2-movies.png)
+
+Nous avons ajouté directemnt les schémas de données :
+
+- **MovieDto** : Structure des données d'un film
+
+  - Informations de base (id, titre, synopsis)
+  - Données de notation (vote_average, vote_count)
+  - URLs des images
+  - Genres
+
+- **MovieResponseDto** : Structure de la réponse de plusieurs films paginée
+  - Liste des films
+  - Informations de pagination
+  - Nombre total de résultats
+
+![Schémas Swagger](./Capture/Swagger2-schemas.png)
+
+#### Tests unitaires
+
+De nouveaux tests unitaires ont été ajoutés :
+
+- Tests pour les dto : MovieDto et MovieResponseDto
+- Tests du service : MoviesService
+- Tests du contrôleur : MoviesController
+- Tests de transformation des données TMDB
+
+Résultat des tests :
+
+```bash
+npm run test
+```
+
+![Résultat des tests](./Capture/CaptureTestJ2.png)
+
+#### Utilisation
+
+1. Démarrer le serveur :
+
+```bash
+npm run start:dev
+```
+
+2. Accéder à Swagger :
+   http://localhost:3000/api
+
+3. Tester l'endpoint /movies :
+
+- S'identifier et recupérer l'access_token
+- Utiliser l'access_token pour accéder à l'endpoint /movies
+- Tester les différents paramètres de l'endpoint /movies
 
 ## Ressources
 

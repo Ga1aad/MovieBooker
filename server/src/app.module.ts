@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { User } from './user/entities/user.entity';
       autoLoadEntities: true,
     }),
     AuthModule,
+    MoviesModule,
   ],
 })
 export class AppModule {}
