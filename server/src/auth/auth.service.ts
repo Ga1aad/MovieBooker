@@ -69,8 +69,15 @@ export class AuthService {
       throw new UnauthorizedException('Email ou mot de passe incorrect');
     }
 
-    // Générer le token JWT
-    const payload = { sub: user.id, email: user.email };
+    // Générer le token JWT avec le username inclus
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username, // Ajout du username dans le payload
+    };
+
+    console.log('Login payload:', payload); // Pour déboguer
+
     return {
       access_token: this.jwtService.sign(payload),
     };

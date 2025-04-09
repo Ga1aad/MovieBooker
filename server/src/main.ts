@@ -6,6 +6,13 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Configuration CORS
+  app.enableCors({
+    origin: 'http://localhost:5173', // URL du frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   // Configuration de la validation globale
   app.useGlobalPipes(new ValidationPipe());
 
