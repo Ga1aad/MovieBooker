@@ -67,4 +67,33 @@ export class MoviesService {
       );
     }
   }
+
+  async getMovieById(id: number): Promise<MovieDto | null> {
+    try {
+      const response = await axios.get(`${this.apiUrl}/movie/${id}`, {
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const movie = response.data;
+      return {
+        id: movie.id,
+        title: movie.title,
+        overview: movie.overview,
+        release_date: movie.release_date,
+        poster_path: movie.poster_path || null,
+        vote_average: movie.vote_average,
+        vote_count: movie.vote_count,
+        original_language: movie.original_language,
+        genres: movie.genres.map((g) => g.name),
+        poster_url: movie.poster_path
+          ? `${this.imageBaseUrl}${movie.poster_path}`
+          : null,
+      } as MovieDto;
+    } catch (error) {
+      return null;
+    }
+  }
 }

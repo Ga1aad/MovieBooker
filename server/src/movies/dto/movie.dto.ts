@@ -28,8 +28,9 @@ export class MovieDto {
   @ApiProperty({
     example: '/test.jpg',
     description: "Chemin de l'affiche du film",
+    nullable: true,
   })
-  poster_path: string;
+  poster_path: string | null;
 
   @ApiProperty({
     example: 8.4,
@@ -61,6 +62,7 @@ export class MovieDto {
   @ApiProperty({
     example: 'https://image.tmdb.org/t/p/original/test.jpg',
     description: "URL complète de l'affiche",
+    nullable: true,
   })
-  poster_url: string;
+  poster_url: string | null;
 }
