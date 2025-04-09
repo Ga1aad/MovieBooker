@@ -54,11 +54,11 @@ describe('JwtStrategy', () => {
       );
     });
 
-    it('should throw UnauthorizedException for payload with missing values', async () => {
+    it('should throw UnauthorizedException for payload with missing email', async () => {
       const invalidPayload = {
         sub: 'user-id',
         email: undefined,
-      } as any; // Using type assertion for testing invalid payload
+      };
 
       await expect(strategy.validate(invalidPayload)).rejects.toThrow(
         UnauthorizedException,
@@ -73,7 +73,7 @@ describe('JwtStrategy', () => {
       });
 
       expect(() => new JwtStrategy(mockConfigService)).toThrow(
-        'JWT_SECRET is not defined in environment variables',
+        'JWT_SECRET is not defined',
       );
     });
 

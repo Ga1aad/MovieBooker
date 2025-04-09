@@ -241,6 +241,94 @@ npm run start:dev
 - Utiliser l'access_token pour accéder à l'endpoint /movies
 - Tester les différents paramètres de l'endpoint /movies
 
+## Jour 3 : Système de Réservation de Films
+
+Pour ce troisième jour, nous avons implémenté un système complet de réservation de films. Les utilisateurs peuvent désormais :
+
+- Créer une réservation pour un film
+- Consulter leurs réservations
+- Annuler une réservation existante
+
+### Endpoints de Réservation
+
+Tous les endpoints de réservation nécessitent une authentification JWT.
+
+#### 1. Créer une Réservation
+
+- **POST** `/reservations`
+- Permet de réserver un film pour une date et heure spécifiques
+- Vérifie plusieurs conditions :
+  - La date doit être dans le futur
+  - Pas de chevauchement avec d'autres réservations
+  - Le film doit exister
+- Durée automatique de 2 heures par séance
+  ![Création d'une réservation](Capture/Swagger3-reservation.png)
+
+#### 2. Liste des Réservations
+
+- **GET** `/reservations`
+- Retourne toutes les réservations de l'utilisateur connecté
+- Triées par date de séance
+  ![Liste des réservations](Capture/Swagger3-reservationlist.png)
+
+#### 3. Supprimer une Réservation
+
+- **DELETE** `/reservations/{id}`
+- Permet d'annuler une réservation existante
+- Vérifie que :
+  - La réservation existe
+  - L'utilisateur est bien le propriétaire
+  - La séance n'a pas encore commencé
+    ![Suppression d'une réservation](Capture/Swagger3-resservation-deleted.png)
+    Une fois la scéance bien suprimée, la liste des réservations est vide :
+    ![Liste vide](Capture/Swagger3-reservationlist-empty.png)
+
+### Gestion des Erreurs
+
+Le système inclut une gestion des erreurs :
+
+- Tentative de réservation dans le passé
+  ![Erreur date passée](Capture/Swagger3-reservation-notinfuture.png)
+- Conflit avec une réservation existante
+  ![Erreur créneau occupé](Capture/Swagger3-reservation-alreadytaken.png)
+
+### Tests Unitaires
+
+Les nouveaux composants sont couverts par des tests unitaires exhaustifs :
+
+```bash
+npm run test
+```
+
+![Tests Jour 3](Capture/CaptureTestJ3.png)
+
+Les tests incluent :
+
+- `ReservationController` : Validation des endpoints et de la gestion des erreurs
+- `ReservationService` : Logique métier et règles de réservation
+- DTOs : Validation des données d'entrée/sortie
+- Intégration avec le système d'authentification
+
+### Utilisation
+
+1. Démarrer le serveur :
+
+```bash
+npm run start:dev
+```
+
+2. Accéder à Swagger :
+   http://localhost:3000/api
+
+3. Tester l'endpoint /reservations :
+
+- S'identifier et recupérer l'access_token
+- Utiliser l'access_token pour accéder à l'endpoint /reservations
+- Créer une réservation
+- Lister les réservations
+- Supprimer une réservation
+- Vérifier que la réservation est bien supprimée de la liste
+
 ## Ressources
 
 ### ExoJ1

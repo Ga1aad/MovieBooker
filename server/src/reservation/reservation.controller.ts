@@ -7,6 +7,8 @@ import {
   Param,
   UseGuards,
   Request,
+  BadRequestException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -39,7 +41,16 @@ export class ReservationController {
     @Body() createReservationDto: CreateReservationDto,
     @Request() req,
   ): Promise<ReservationResponseDto> {
-    return this.reservationService.create(createReservationDto, req.user);
+    if (!req.user) {
+      throw new BadRequestException('Utilisateur non authentifié');
+    }
+
+    const user = {
+      id: req.user.userId,
+      email: req.user.email,
+    };
+
+    return this.reservationService.create(createReservationDto, user);
   }
 
   @Get()
@@ -48,6 +59,9 @@ export class ReservationController {
   })
   @ApiResponse({ status: 200, type: ReservationListResponseDto })
   async findAll(@Request() req): Promise<ReservationListResponseDto> {
+    if (!req.user || !req.user.userId) {
+      throw new BadRequestException('Utilisateur non authentifié');
+    }
     const reservations = await this.reservationService.findAllByUser(
       req.user.userId,
     );
@@ -62,12 +76,12 @@ export class ReservationController {
   @ApiResponse({ status: 200, description: 'Réservation annulée avec succès' })
   @ApiResponse({ status: 404, description: 'Réservation non trouvée' })
   async remove(
-    @Param() deleteReservationDto: DeleteReservationDto,
+    @Param('id', ParseIntPipe) id: number,
     @Request() req,
   ): Promise<void> {
-    return this.reservationService.remove(
-      deleteReservationDto.id,
-      req.user.userId,
-    );
+    if (!req.user || !req.user.userId) {
+      throw new BadRequestException('Utilisateur non authentifié');
+    }
+    return this.reservationService.remove(id, req.user.userId);
   }
 }
