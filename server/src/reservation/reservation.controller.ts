@@ -7,7 +7,6 @@ import {
   Param,
   UseGuards,
   Request,
-  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,6 +17,9 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
+import { DeleteReservationDto } from './dto/delete-reservation.dto';
+import { ReservationResponseDto } from './dto/reservation-response.dto';
+import { ReservationListResponseDto } from './dto/reservation-list-response.dto';
 
 @ApiTags('reservations')
 @Controller('reservations')
@@ -28,7 +30,7 @@ export class ReservationController {
 
   @Post()
   @ApiOperation({ summary: 'Créer une nouvelle réservation' })
-  @ApiResponse({ status: 201, description: 'Réservation créée avec succès' })
+  @ApiResponse({ status: 201, type: ReservationResponseDto })
   @ApiResponse({
     status: 400,
     description: 'Données invalides ou conflit horaire',
@@ -36,41 +38,36 @@ export class ReservationController {
   async create(
     @Body() createReservationDto: CreateReservationDto,
     @Request() req,
-  ) {
-    console.log('User from request:', req.user);
-
-    if (!req.user || !req.user.userId) {
-      throw new BadRequestException('Utilisateur non authentifié');
-    }
-
-    const user = {
-      id: req.user.userId,
-      email: req.user.email,
-    };
-
-    return this.reservationService.create(createReservationDto, user);
+  ): Promise<ReservationResponseDto> {
+    return this.reservationService.create(createReservationDto, req.user);
   }
 
   @Get()
   @ApiOperation({
     summary: "Récupérer toutes les réservations de l'utilisateur",
   })
-  @ApiResponse({ status: 200, description: 'Liste des réservations' })
-  findAll(@Request() req) {
-    if (!req.user || !req.user.userId) {
-      throw new BadRequestException('Utilisateur non authentifié');
-    }
-    return this.reservationService.findAllByUser(req.user.userId);
+  @ApiResponse({ status: 200, type: ReservationListResponseDto })
+  async findAll(@Request() req): Promise<ReservationListResponseDto> {
+    const reservations = await this.reservationService.findAllByUser(
+      req.user.userId,
+    );
+    return {
+      reservations,
+      total: reservations.length,
+    };
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Annuler une réservation' })
   @ApiResponse({ status: 200, description: 'Réservation annulée avec succès' })
   @ApiResponse({ status: 404, description: 'Réservation non trouvée' })
-  remove(@Param('id') id: string, @Request() req) {
-    if (!req.user || !req.user.userId) {
-      throw new BadRequestException('Utilisateur non authentifié');
-    }
-    return this.reservationService.remove(+id, req.user.userId);
+  async remove(
+    @Param() deleteReservationDto: DeleteReservationDto,
+    @Request() req,
+  ): Promise<void> {
+    return this.reservationService.remove(
+      deleteReservationDto.id,
+      req.user.userId,
+    );
   }
 }
