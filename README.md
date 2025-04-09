@@ -329,6 +329,64 @@ npm run start:dev
 - Supprimer une réservation
 - Vérifier que la réservation est bien supprimée de la liste
 
+---
+
+## Frontend React (MovieBooker Client)
+
+Pour compléter notre application backend, nous avons développé un frontend moderne en React qui consomme tous les endpoints de notre API.
+
+### Fonctionnalités Principales
+
+#### Authentification
+
+- Page de connexion et d'inscription
+- Protection des routes nécessitant une authentification
+- Gestion des tokens JWT
+- Redirection automatique vers la page de connexion
+
+#### Gestion des Films
+
+- Affichage des films dans une grille responsive
+- Recherche de films
+- Tri par popularité, date de sortie et note
+- Pagination des résultats
+- Modal détaillé pour chaque film permettant de réserver une séance
+
+#### Système de Réservation
+
+- Sélection de date et d'heure pour les séances
+- Vérification des créneaux disponibles
+- Gestion des conflits de réservation
+- Liste des réservations dans le profil utilisateur
+- Possibilité d'annuler une réservation
+
+#### Interface Utilisateur
+
+- Design moderne avec Tailwind CSS
+- Composants réutilisables avec shadcn/ui
+- Notifications avec Sonner
+- Gestion d'état avec TanStack Query
+- Formulaires validés avec validation des champs
+
+### Installation et Démarrage
+
+1. Installer les dépendances :
+
+```bash
+cd moviebooker-client
+npm install
+```
+
+3. Lancer l'application en mode développement :
+
+```bash
+npm run dev
+```
+
+L'application sera accessible à l'adresse : http://localhost:5173
+
+---
+
 ## Ressources
 
 ### ExoJ1

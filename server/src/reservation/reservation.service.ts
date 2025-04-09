@@ -27,15 +27,12 @@ export class ReservationService {
     createReservationDto: CreateReservationDto,
     user: any,
   ): Promise<Reservation> {
-    // Conversion explicite en UTC+2 (fuseau horaire de Paris)
     const startTime = new Date(createReservationDto.startTime);
-    startTime.setHours(startTime.getHours() + 2);
 
     const endTime = new Date(startTime);
     endTime.setHours(endTime.getHours() + 2);
 
     const now = new Date();
-    now.setHours(now.getHours() + 2);
 
     if (startTime <= now) {
       throw new BadRequestException(
@@ -43,7 +40,28 @@ export class ReservationService {
       );
     }
 
-    // Vérifier les conflits de réservation
+    // Vérifier les conflits de réservation pour l'utilisateur
+    const userReservations = await this.reservationRepository.find({
+      where: { userId: user.id },
+      order: { startTime: 'ASC' },
+    });
+
+    // Vérifier qu'il y a au moins 1h59 entre les débuts de séances
+    for (const existingReservation of userReservations) {
+      const existingStart = new Date(existingReservation.startTime);
+
+      const minutesBetweenStarts = Math.abs(
+        (startTime.getTime() - existingStart.getTime()) / (1000 * 60),
+      );
+
+      if (minutesBetweenStarts < 119) {
+        throw new BadRequestException(
+          'Il doit y avoir au moins 1h59 entre les débuts de chaque séance',
+        );
+      }
+    }
+
+    // Vérifier les conflits directs
     const conflicts = await this.reservationRepository.find({
       where: {
         userId: user.id,
@@ -65,7 +83,6 @@ export class ReservationService {
       throw new NotFoundException('Film non trouvé');
     }
 
-    // Création de la réservation avec les heures ajustées
     const reservation = this.reservationRepository.create({
       movieId: createReservationDto.movieId,
       movieTitle: movie.title,
@@ -83,12 +100,8 @@ export class ReservationService {
       order: { startTime: 'ASC' },
     });
 
-    // Ajuster les heures pour l'affichage
-    return reservations.map((reservation) => ({
-      ...reservation,
-      startTime: new Date(reservation.startTime),
-      endTime: new Date(reservation.endTime),
-    }));
+    // Retourner les réservations sans modification d'heure
+    return reservations;
   }
 
   async remove(id: number, userId: number): Promise<void> {
@@ -101,9 +114,8 @@ export class ReservationService {
     }
 
     const now = new Date();
-    now.setHours(now.getHours() + 2);
 
-    if (reservation.startTime <= now) {
+    if (new Date(reservation.startTime) <= now) {
       throw new BadRequestException(
         "Impossible d'annuler une réservation déjà commencée",
       );

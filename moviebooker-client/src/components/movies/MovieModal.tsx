@@ -68,16 +68,35 @@ const generateTimeSlots = (
   if (!selectedDate) return [];
 
   const slots = [];
+  // Générer les créneaux de 10h à 22h
   for (let hour = 10; hour <= 22; hour++) {
     const slotTime = new Date(selectedDate);
     slotTime.setHours(hour, 0, 0, 0);
 
     // Ne pas proposer les créneaux passés
-    if (slotTime <= new Date()) continue;
+    const now = new Date();
+    if (slotTime <= now) continue;
 
-    // Vérifier les conflits
-    if (!isTimeSlotConflicting(slotTime, existingReservations)) {
-      slots.push(`${hour}:00`);
+    let isAvailable = true;
+
+    // Vérifier les conflits avec les réservations existantes
+    for (const reservation of existingReservations) {
+      // Ajuster l'heure de la réservation existante pour correspondre à l'heure locale
+      const reservationStart = new Date(reservation.startTime);
+
+      // Calculer la différence en minutes entre les heures de début
+      const minutesBetweenStarts = Math.abs(
+        (slotTime.getTime() - reservationStart.getTime()) / (1000 * 60)
+      );
+
+      if (minutesBetweenStarts < 119) {
+        isAvailable = false;
+        break;
+      }
+    }
+
+    if (isAvailable) {
+      slots.push(`${hour.toString().padStart(2, "0")}:00`);
     }
   }
   return slots;
@@ -104,42 +123,32 @@ export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
   const { user } = useAuthContext();
   const { data: reservations = [] } = useUserReservations();
 
-  const handleDateChange = (newDate: Date | undefined) => {
-    setDate(newDate);
-    setTime(undefined); // Réinitialiser l'heure quand la date change
-  };
-
-  const availableTimeSlots = generateTimeSlots(date, reservations);
-
   const handleReservation = async () => {
     if (!date || !time) {
       toast.error("Veuillez sélectionner une date et une heure");
       return;
     }
 
-    const [hours] = time.split(":");
-    const startTime = new Date(date);
-    startTime.setHours(parseInt(hours), 0, 0, 0);
-
-    // Vérifier une dernière fois les conflits
-    if (isTimeSlotConflicting(startTime, reservations)) {
-      toast.error("Ce créneau n'est plus disponible");
-      return;
-    }
-
     try {
+      // Créer une date avec le bon fuseau horaire
+      const [hours] = time.split(":");
+      const startTime = new Date(date);
+      startTime.setHours(parseInt(hours), 0, 0, 0);
+      // Pas besoin d'ajouter +2 heures car on veut envoyer l'heure exacte choisie
+
       const response = await api.post("/reservations", {
         movieId: movie.id,
-        startTime: startTime.toISOString(),
+        startTime: startTime.toISOString(), // Envoyer directement l'heure choisie
       });
 
       toast.success("Réservation confirmée", {
         description: `Votre séance pour ${
           movie.title
-        } est réservée pour le ${format(startTime, "d MMMM à HH'h'", {
+        } est réservée pour le ${format(startTime, "d MMMM à HH'h'mm", {
           locale: fr,
         })}`,
       });
+
       onClose();
     } catch (error: any) {
       const errorMessage =
@@ -149,6 +158,8 @@ export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
       });
     }
   };
+
+  const availableTimeSlots = generateTimeSlots(date, reservations);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -198,7 +209,7 @@ export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={handleDateChange}
+                  onSelect={setDate}
                   disabled={{ before: new Date() }}
                   className="rounded-md border"
                   locale={fr}
@@ -231,8 +242,8 @@ export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
 
                 {date && availableTimeSlots.length === 0 && (
                   <p className="text-sm text-yellow-600 bg-yellow-50 p-3 rounded-md">
-                    Aucun créneau disponible pour cette date. Veuillez
-                    sélectionner une autre date.
+                    Aucun créneau disponible pour cette date. Il doit y avoir au
+                    moins 1h59 entre les débuts de chaque séance.
                   </p>
                 )}
               </div>
