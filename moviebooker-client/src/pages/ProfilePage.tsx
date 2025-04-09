@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ReservationList } from "@/components/reservations/ReservationList";
 
 export function ProfilePage() {
   const { user, logout } = useAuthContext();
@@ -24,7 +25,7 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 space-y-8">
       <Card className="max-w-md mx-auto">
         <CardHeader className="text-center">
           <Avatar className="w-24 h-24 mx-auto mb-4">
@@ -64,6 +65,11 @@ export function ProfilePage() {
           </Button>
         </CardFooter>
       </Card>
+
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6">Mes Réservations</h2>
+        <ReservationList />
+      </div>
     </div>
   );
 }

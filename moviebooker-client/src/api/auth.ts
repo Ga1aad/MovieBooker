@@ -88,8 +88,8 @@ export const authApi = {
       user: {
         id: response.data.user.id,
         email: response.data.user.email,
-        username: response.data.user.username
-      }
+        username: response.data.user.username,
+      },
     };
   },
 };
