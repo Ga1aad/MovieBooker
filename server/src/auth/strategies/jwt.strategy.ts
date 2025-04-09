@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('Payload reçu dans JWT strategy:', payload);
+    // console.log('Payload reçu dans JWT strategy:', payload);
 
     if (!payload.sub || !payload.email) {
       throw new UnauthorizedException('Token invalide');
@@ -32,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       username: payload.username,
     };
 
-    console.log('Données retournées par validate:', result);
+    // console.log('Données retournées par validate:', result);
     return result;
   }
 }

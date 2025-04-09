@@ -76,7 +76,7 @@ export class AuthService {
       username: user.username, // Ajout du username dans le payload
     };
 
-    console.log('Login payload:', payload); // Pour déboguer
+    // console.log('Login payload:', payload); // Pour déboguer
 
     return {
       access_token: this.jwtService.sign(payload),

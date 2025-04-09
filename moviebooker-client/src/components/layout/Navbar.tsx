@@ -17,14 +17,14 @@ export function Navbar() {
   };
 
   // Logs de débogage
-  console.log("Auth state:", {
-    isAuthenticated,
-    user,
-    cookies: {
-      token: Cookies.get("token"),
-      user: Cookies.get("user"),
-    },
-  });
+  // console.log("Auth state:", {
+  //   isAuthenticated,
+  //   user,
+  //   cookies: {
+  //     token: Cookies.get("token"),
+  //     user: Cookies.get("user"),
+  //   },
+  // });
 
   return (
     <nav className="border-b">
