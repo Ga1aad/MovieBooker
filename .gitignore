@@ -3,11 +3,15 @@
 /hello-world/node_modules
 /hello-world/build
 
-# compiled output
 /server/dist
 /server/node_modules
 /server/build
 /server/.env
+
+/moviebooker-client/dist
+/moviebooker-client/node_modules
+/moviebooker-client/build
+/moviebooker-client/.env
 
 # Logs
 logs
