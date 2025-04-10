@@ -8,9 +8,10 @@ async function bootstrap() {
 
   // Configuration CORS
   app.enableCors({
-    origin: 'http://localhost:5173', // URL du frontend
+    origin: ['http://localhost:5173', 'https://moviebooker-gf.netlify.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   // Configuration de la validation globale
