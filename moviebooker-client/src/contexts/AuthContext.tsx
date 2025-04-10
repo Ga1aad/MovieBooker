@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react";
-import { authApi } from "@/api/auth";
+import { createContext, useContext, ReactNode, useEffect } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
 import Cookies from "js-cookie";
 
@@ -15,11 +8,17 @@ interface User {
   username?: string;
 }
 
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   token: string | null;
   logout: () => void;
+  login: (credentials: LoginCredentials) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (user && user.id && user.email) {
           auth.setAuth(token, user);
         }
-      } catch (error) {
+      } catch {
         // En cas d'erreur de parsing, on nettoie les cookies
         Cookies.remove("token");
         Cookies.remove("user");
@@ -51,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: auth.user,
     token: auth.token,
     logout: auth.logout,
+    login: auth.login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

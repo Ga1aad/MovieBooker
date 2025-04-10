@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useAuthContext } from "@/contexts/AuthContext";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
-  const { isAuthenticated, user, logout } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
   const navigate = useNavigate();
 
   const getDisplayName = (

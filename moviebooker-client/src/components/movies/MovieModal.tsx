@@ -40,26 +40,6 @@ const useUserReservations = () => {
   });
 };
 
-// Vérifier si un créneau est en conflit avec les réservations existantes
-const isTimeSlotConflicting = (
-  selectedDateTime: Date,
-  existingReservations: any[]
-) => {
-  const selectedStart = new Date(selectedDateTime);
-  const selectedEnd = addHours(selectedStart, 2);
-
-  return existingReservations.some((reservation) => {
-    const reservationStart = new Date(reservation.startTime);
-    const reservationEnd = new Date(reservation.endTime);
-
-    return (
-      (selectedStart >= reservationStart && selectedStart < reservationEnd) ||
-      (selectedEnd > reservationStart && selectedEnd <= reservationEnd) ||
-      (selectedStart <= reservationStart && selectedEnd >= reservationEnd)
-    );
-  });
-};
-
 // Générer les créneaux horaires disponibles (de 10h à 22h)
 const generateTimeSlots = (
   selectedDate: Date | undefined,
@@ -120,7 +100,6 @@ const formatReleaseDate = (dateString: string | null | undefined) => {
 export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState<string>();
-  const { user } = useAuthContext();
   const { data: reservations = [] } = useUserReservations();
 
   const handleReservation = async () => {
@@ -136,7 +115,7 @@ export function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
       startTime.setHours(parseInt(hours), 0, 0, 0);
       // Pas besoin d'ajouter +2 heures car on veut envoyer l'heure exacte choisie
 
-      const response = await api.post("/reservations", {
+      await api.post("/reservations", {
         movieId: movie.id,
         startTime: startTime.toISOString(), // Envoyer directement l'heure choisie
       });

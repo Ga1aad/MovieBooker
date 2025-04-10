@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
+import { authApi } from "@/api/auth";
 
 interface User {
   id: number;
@@ -7,11 +8,17 @@ interface User {
   username?: string;
 }
 
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 interface AuthState {
   token: string | null;
   user: User | null;
   setAuth: (token: string, user: User) => void;
   logout: () => void;
+  login: (credentials: LoginCredentials) => Promise<void>;
 }
 
 const getInitialState = () => {
@@ -47,5 +54,12 @@ export const useAuth = create<AuthState>((set) => ({
     Cookies.remove("token");
     Cookies.remove("user");
     set({ token: null, user: null });
+  },
+  login: async (credentials) => {
+    const response = await authApi.login(credentials);
+    const { token, user } = response;
+    Cookies.set("token", token);
+    Cookies.set("user", JSON.stringify(user));
+    set({ token, user });
   },
 }));
