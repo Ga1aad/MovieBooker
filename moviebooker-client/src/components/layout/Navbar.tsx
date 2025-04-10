@@ -12,8 +12,7 @@ export function Navbar() {
     user: { email: string; username?: string } | null
   ) => {
     if (!user) return "";
-    // Prioriser le username, ne PAS utiliser l'email coupé si un username existe
-    return user.username || user.email; // Retourner l'email complet si pas de username
+    return user.username || user.email;
   };
 
   // Logs de débogage

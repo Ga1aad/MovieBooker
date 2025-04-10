@@ -19,7 +19,7 @@ import { ReservationModule } from './reservation/reservation.module';
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'nest_auth',
       entities: [User],
-      synchronize: true, // Ne pas utiliser en production
+      synchronize: true,
       autoLoadEntities: true,
     }),
     AuthModule,

@@ -100,7 +100,6 @@ export class ReservationService {
       order: { startTime: 'ASC' },
     });
 
-    // Retourner les réservations sans modification d'heure
     return reservations;
   }
 

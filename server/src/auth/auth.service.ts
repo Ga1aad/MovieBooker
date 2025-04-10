@@ -73,7 +73,7 @@ export class AuthService {
     const payload = {
       sub: user.id,
       email: user.email,
-      username: user.username, // Ajout du username dans le payload
+      username: user.username,
     };
 
     // console.log('Login payload:', payload); // Pour déboguer

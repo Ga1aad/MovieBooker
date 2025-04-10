@@ -49,7 +49,7 @@ export class MoviesService {
         poster_url: movie.poster_path
           ? `${this.imageBaseUrl}${movie.poster_path}`
           : null,
-        genres: movie.genre_ids, // À implémenter : conversion des IDs en noms de genres
+        genres: movie.genre_ids,
       })) as MovieDto[];
 
       const movieResponse = {

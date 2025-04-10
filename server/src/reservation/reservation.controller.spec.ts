@@ -71,7 +71,7 @@ describe('ReservationController', () => {
       expect(result).toEqual(expectedResponse);
       expect(mockReservationService.create).toHaveBeenCalledWith(
         createReservationDto,
-        { id: mockRequest.user.userId, email: mockRequest.user.email }, // Transformation de la structure
+        { id: mockRequest.user.userId, email: mockRequest.user.email },
       );
     });
 
