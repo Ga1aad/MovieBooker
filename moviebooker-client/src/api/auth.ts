@@ -4,7 +4,6 @@ import { jwtDecode } from "jwt-decode";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "https://moviebooker-ziz6.onrender.com";
-console.log("API URL:", API_URL); // Pour déboguer
 
 // Créer une instance axios avec la configuration de base
 export const api = axios.create({
