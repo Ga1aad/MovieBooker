@@ -32,17 +32,17 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 
   // Mécanisme anti-veille
-  const serverUrl = `http://localhost:${process.env.PORT ?? 3000}`;
+  const serverUrl = 'https://moviebooker-api.onrender.com'; // URL de production
   setInterval(
     async () => {
       try {
         await fetch(serverUrl);
-        console.log('Ping de maintien en activité effectué');
+        console.log('Ping de maintien en activité effectué sur:', serverUrl);
       } catch (error) {
         console.error('Erreur lors du ping de maintien en activité:', error);
       }
     },
     14 * 60 * 1000,
-  );
+  ); // 14 minutes en millisecondes
 }
 bootstrap();
