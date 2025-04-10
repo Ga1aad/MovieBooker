@@ -14,11 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format, addHours } from "date-fns";
+import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useState } from "react";
 import { Movie } from "@/api/movies";
-import { useAuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { api } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
