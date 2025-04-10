@@ -21,6 +21,9 @@ import { ReservationModule } from './reservation/reservation.module';
       entities: [User],
       synchronize: true,
       autoLoadEntities: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     AuthModule,
     MoviesModule,
