@@ -2,6 +2,12 @@
 
 Projet Nest.js académique de reservation de films en ligne.
 
+Projet déployé sur Netlify et Render.
+
+Lien vers le site déployé en ligne [MovieBooker](https://moviebooker-gf.netlify.app/)
+
+Lien vers le Swagger pour le backend [MovieBooker-Swagger](https://moviebooker-ziz6.onrender.com/api)
+
 ## Description
 
 Ce projet contient plusieurs exercices afin de pratiquer et monter en compétences avec Nest.js.
