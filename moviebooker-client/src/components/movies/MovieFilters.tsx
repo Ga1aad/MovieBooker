@@ -6,15 +6,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Search, X, SlidersHorizontal } from "lucide-react";
 import { useState, FormEvent } from "react";
 
+type SortOption = "popularity" | "release_date" | "vote_average";
+
 interface MovieFiltersProps {
   onSearchChange: (search: string) => void;
-  onSortChange: (sort: string) => void;
-  currentSort: string;
+  onSortChange: (sort: SortOption) => void;
+  currentSort: SortOption;
   currentSearch: string;
 }
 
@@ -101,12 +102,12 @@ export function MovieFilters({
           </div>
           <Select value={currentSort} onValueChange={onSortChange}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Trier par..." />
+              <SelectValue placeholder="Sélectionner un tri" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="popularity">Popularité</SelectItem>
               <SelectItem value="release_date">Date de sortie</SelectItem>
-              <SelectItem value="vote_average">Note</SelectItem>
+              <SelectItem value="vote_average">Note moyenne</SelectItem>
             </SelectContent>
           </Select>
         </div>

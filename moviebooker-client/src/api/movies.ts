@@ -11,7 +11,7 @@ export interface Movie {
   genres: string[];
 }
 
-interface MovieResponse {
+export interface MovieResponse {
   results: Movie[];
   page: number;
   total_pages: number;

@@ -1,27 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { moviesApi } from "@/api/movies";
+import { moviesApi, Movie, MovieResponse } from "@/api/movies";
 import { MovieCard } from "./MovieCard";
 import { MovieFilters } from "./MovieFilters";
 import { MoviePagination } from "./MoviePagination";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 export function MovieGrid() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("popularity");
+  const [sort, setSort] = useState<
+    "popularity" | "release_date" | "vote_average"
+  >("popularity");
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<MovieResponse, Error>({
     queryKey: ["movies", page, search, sort],
     queryFn: () => moviesApi.getMovies({ page, search, sort }),
-    keepPreviousData: true,
   });
 
   const handleSearch = (searchTerm: string) => {
     setSearch(searchTerm);
-    setPage(1); // Réinitialiser la page lors d'une nouvelle recherche
+    setPage(1);
   };
 
   if (isLoading) {
@@ -53,7 +53,9 @@ export function MovieGrid() {
     <div className="space-y-8">
       <MovieFilters
         onSearchChange={handleSearch}
-        onSortChange={(value) => {
+        onSortChange={(
+          value: "popularity" | "release_date" | "vote_average"
+        ) => {
           setSort(value);
           setPage(1);
         }}
@@ -97,7 +99,7 @@ export function MovieGrid() {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {data?.results.map((movie) => (
+            {data?.results.map((movie: Movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
