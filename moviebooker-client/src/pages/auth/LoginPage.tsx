@@ -25,7 +25,7 @@ export function LoginPage() {
     e.preventDefault();
     try {
       const { token, user } = await authApi.login({ email, password });
-      console.log("Login response:", { token, user });
+      // console.log("Login response:", { token, user });
       setAuth(token, user);
       navigate("/movies");
     } catch (err) {
